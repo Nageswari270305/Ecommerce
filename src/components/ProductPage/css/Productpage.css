@@ -1,0 +1,42 @@
+.ProductPage{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.SingleProduct{
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.ProductPage h3{
+    font-size: large;
+    text-align: center;
+}
+
+.ProductPage img{
+    width: 280px;
+    padding-left: 130px;
+}
+
+.Themesetting{
+   display: flex;
+    flex-direction: column;
+    width: 100px;
+    border: 1px solid black;
+    height: 81px;
+    gap: 10px;
+    padding: 20px;
+    position: absolute;
+}
+
+.app-theme.dark{
+    background-color: rgb(39, 38, 38);
+    color: white;
+}
+
+.app-theme.dark .SingleProduct{
+ border: 2px solid white;
+    border-radius: 10px;
+}
