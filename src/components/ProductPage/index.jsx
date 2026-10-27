@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState, useContext} from "react";
+import React, {useCallback, useEffect, useState, useContext, useReducer} from "react";
 import {useDispatch} from "react-redux"
 import { addToCart, applyFilter } from "../../redux/CartSlice";
 import AddToCart from './addToCart'
@@ -8,6 +8,8 @@ import Theme from './appTheme'
 import RatingFilter from './ProductFilter'
 import TagFilter from './ProductFilter/TagFilter'
 import FilterProducts from "./ProductFilter/FIlterReducer";
+import WishListReducer from '../../redux/reducer'
+import WishListCart from './wishlistcart'
 
 function ProductPage(){
 
@@ -18,8 +20,10 @@ const {theme, setTheme} = useContext(Theme)
 const [filter, setFilter] = useState(false);
 const [filterapplied, setFilterapplied] = useState(false);
 const [clearFilter, setClearFilter] = useState(false);
-
-
+const [wishlists, setWishLists] = useState(false);
+const [WishList, Wishlistdispatch] = useReducer(WishListReducer, [])
+ 
+console.log("wishList", WishList);
 const dispatch = useDispatch();
 
 useEffect(()=>{
@@ -48,6 +52,27 @@ const handleFilter = () =>{
  const handleApplyFilter = () =>{
     dispatch(applyFilter(product));
     setFilterapplied(true);
+    }
+
+
+    const handlewishList = (data) =>{
+        Wishlistdispatch({type : "Add_To_WishList", payload : data})
+        setWishLists(true);
+
+    }
+
+    const handleWishlistDelete =(data)=>{
+        Wishlistdispatch({type:"Delete_WishList", payload : data})
+    }
+
+    if(wishlists){
+          return <WishListCart 
+        wishlists={wishlists}
+        setWishLists={setWishLists}
+        WishList={WishList}
+        handleWishlistDelete={handleWishlistDelete}
+
+        />
     }
 
 if(viewCart){
@@ -84,14 +109,7 @@ console.log("filterapplied",filterapplied);
                 clearFilter={clearFilter}
                 setClearFilter={setClearFilter}
                 />}
-                {filter &&  <TagFilter 
-                 product={product}
-                setProduct={setProduct}
-                filterapplied={filterapplied}
-                setFilterapplied={setFilterapplied}
-                clearFilter={clearFilter}
-                setClearFilter={setClearFilter}
-                />}
+                {filter &&  <TagFilter />}
             </div>
            {filter && ( <button onClick={()=>handleApplyFilter()}>Apply</button> )}
             {((!filterapplied && !clearFilter) || (!filterapplied && clearFilter)) && (
@@ -107,6 +125,7 @@ console.log("filterapplied",filterapplied);
                         <p>Discount : {data.discountPercentage}</p>
                         <p>Tag : {data.tags[0]}</p>
                         <button onClick={() => addTocart(data)}>Add Cart</button>
+                        <button onClick={()=>handlewishList(data)}>Add to WishList</button>
                     </div>
                     </div>
                 ))}

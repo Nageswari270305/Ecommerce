@@ -3,9 +3,7 @@ import {filterRating, applyFilter} from '../../../redux/CartSlice'
 import { useState } from "react";
 import FilterProducts from '../ProductFilter/FIlterReducer'
 
-function RatingFilter(props){
-
-    const {product, setProduct, filterapplied, setFilterapplied, clearFilter, setClearFilter } = props;
+function RatingFilter(){
     const dispatch = useDispatch();
     const Ratings = useSelector((state)=>state.cart.Rating);
 

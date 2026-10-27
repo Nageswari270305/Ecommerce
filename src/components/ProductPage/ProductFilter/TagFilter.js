@@ -1,9 +1,7 @@
 import { useDispatch, useSelector} from "react-redux";
 import {filterTag} from '../../../redux/CartSlice'
 
-function TagFilter(props){
-
-    const {product, setProduct, filterapplied, setFilterapplied, clearFilter, setClearFilter } = props;
+function TagFilter(){
     const dispatch = useDispatch();
     const Tag = useSelector((state)=> state.cart.Tags);
     console.log("Tag",Tag);
