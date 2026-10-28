@@ -1,5 +1,4 @@
 import {createSlice} from "@reduxjs/toolkit";
-import { act } from "react";
 
 const loadcart = () =>{
     try{
@@ -38,6 +37,15 @@ const Filtertag = () =>{
     }
 }
 
+const getWishList = () =>{
+    try{
+        return JSON.parse(localStorage.getItem("WishList") || "[]");
+    }
+    catch{
+        return [];
+    }
+}
+
 const cartSlice = createSlice({
     name : "cart",
 
@@ -46,6 +54,7 @@ const cartSlice = createSlice({
         Rating : FilterRating(),
         FilteredProduct : FilteredProducts(),
         Tags: Filtertag(),
+        WishList : getWishList(),
     },
 
     reducers :{
@@ -96,9 +105,14 @@ const cartSlice = createSlice({
          removeTag : (state, action) =>{
             localStorage.removeItem("Tags");
             state.Tags = [];
+         },
+
+         addToWishlist : (state, action) =>{
+         state.WishList.push({...action.payload, WishListId : crypto.randomUUID()});
+         localStorage.setItem("WishList", JSON.stringify(state.WishList));
          }
     }                                                                                                                                                                                                                           
 })
 
-export const {addToCart,RemoveProductFromCart, filterRating, applyFilter, clearFilters, removeRating, filterTag,removeTag } = cartSlice.actions;
+export const {addToCart,RemoveProductFromCart, filterRating, applyFilter, clearFilters, removeRating, filterTag,removeTag, addToWishlist } = cartSlice.actions;
 export default cartSlice.reducer; 
