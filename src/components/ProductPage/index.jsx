@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState, useContext, useReducer} from "react";
 import {useDispatch} from "react-redux"
-import { addToCart, applyFilter } from "../../redux/CartSlice";
+import { addToCart, applyFilter, addToWishlist } from "../../redux/CartSlice";
 import AddToCart from './addToCart'
 import './css/Productpage.css'
 import ThemeSetting from './themeSetting'
@@ -22,7 +22,8 @@ const [filterapplied, setFilterapplied] = useState(false);
 const [clearFilter, setClearFilter] = useState(false);
 const [wishlists, setWishLists] = useState(false);
 const [WishList, Wishlistdispatch] = useReducer(WishListReducer, [])
- 
+const [viewWishList, setViewWishList] = useState(false);
+
 console.log("wishList", WishList);
 const dispatch = useDispatch();
 
@@ -58,11 +59,16 @@ const handleFilter = () =>{
     const handlewishList = (data) =>{
         Wishlistdispatch({type : "Add_To_WishList", payload : data})
         setWishLists(true);
+        dispatch(addToWishlist(data));
 
     }
 
     const handleWishlistDelete =(data)=>{
         Wishlistdispatch({type:"Delete_WishList", payload : data})
+    }
+
+    const handleWishList = () =>{
+     setViewWishList(true);
     }
 
     if(wishlists){
@@ -71,6 +77,16 @@ const handleFilter = () =>{
         setWishLists={setWishLists}
         WishList={WishList}
         handleWishlistDelete={handleWishlistDelete}
+  
+        />
+    }
+
+    if (viewWishList) {
+        return <WishListCart
+            WishList={WishList} wishlists={wishlists}
+            setWishLists={setWishLists}
+            viewWishList={viewWishList}
+            setViewWishList={setViewWishList}
 
         />
     }
@@ -82,7 +98,6 @@ if(viewCart){
     />
 }
 
-console.log("filterapplied",filterapplied);
     return (
         <>
         <div className={`app-theme ${theme}`}>
@@ -110,6 +125,9 @@ console.log("filterapplied",filterapplied);
                 setClearFilter={setClearFilter}
                 />}
                 {filter &&  <TagFilter />}
+            </div>
+            <div>
+                <button onClick={handleWishList}> WishList</button>
             </div>
            {filter && ( <button onClick={()=>handleApplyFilter()}>Apply</button> )}
             {((!filterapplied && !clearFilter) || (!filterapplied && clearFilter)) && (

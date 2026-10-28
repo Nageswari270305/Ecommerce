@@ -2,10 +2,11 @@ import { useMemo } from "react";
 
 function WishListCart (props){
 
-const {wishlists, setWishLists, WishList, handleWishlistDelete} = props;
+const {wishlists, setWishLists, WishList, handleWishlistDelete, viewWishList, setViewWishList} = props;
 
 const handleBackToProduct = () =>{
 setWishLists(false);
+setViewWishList(false);
 }
 
 const WishListProduct = useMemo(()=>{
